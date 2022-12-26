@@ -2,8 +2,8 @@
 
 <img align="right" width="160" src="src/main/resources/icon.png">
 
-[![](http://cf.way2muchnoise.eu/full_701644_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/food-effect-tooltips-forge)
-[![Minecraft Versions](https://cf.way2muchnoise.eu/versions/701644.svg)](https://www.curseforge.com/minecraft/mc-mods/food-effect-tooltips-forge)
+[![](http://cf.way2muchnoise.eu/full_776426_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/food-effect-tooltips-forge)
+[![Minecraft Versions](https://cf.way2muchnoise.eu/versions/776426.svg)](https://www.curseforge.com/minecraft/mc-mods/food-effect-tooltips-forge)
 
 Forge port for [Food Effect Tooltips](https://github.com/DaFuqs/FoodEffectTooltips).
 
