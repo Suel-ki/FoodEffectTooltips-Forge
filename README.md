@@ -1,4 +1,4 @@
-# FoodEffectTooltips (Forge)
+# Food Effect Tooltips (Forge)
 
 <img align="right" width="160" src="src/main/resources/icon.png">
 
