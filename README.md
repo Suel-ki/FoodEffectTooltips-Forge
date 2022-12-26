@@ -15,4 +15,10 @@ With Food Effect Tooltips all effects are shown in the items tooltip!
 - includes effects that only get applied with a % chance
 - shows stat changes for effects
 - works fully client side
-- compatible with other mods that display food information, like AppleSkin
+- compatible with other mods that display food information, like [AppleSkin](https://github.com/squeek502/AppleSkin)
+
+![ ](https://cdn.modrinth.com/data/GGfyJWnG/images/f22e5fa3013611fb5588662696aa929c1a96b93b.png)
+
+![ ](https://cdn.modrinth.com/data/GGfyJWnG/images/531ff1e28c210beab319cdb192685e1552c878f2.png)
+
+![ ](https://cdn.modrinth.com/data/GGfyJWnG/images/d61df6d59442ba3dece1711e6e423d62a826e3bc.png)
