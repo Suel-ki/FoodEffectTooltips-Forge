@@ -5,7 +5,7 @@
 [![](http://cf.way2muchnoise.eu/full_776426_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/food-effect-tooltips-forge)
 [![Minecraft Versions](https://cf.way2muchnoise.eu/versions/776426.svg)](https://www.curseforge.com/minecraft/mc-mods/food-effect-tooltips-forge)
 
-Forge port for [Food Effect Tooltips](https://github.com/DaFuqs/FoodEffectTooltips).
+This is the Unofficial Forge version of [Food Effect Tooltips](https://github.com/DaFuqs/FoodEffectTooltips), licensed under LGPLv3, please support the original work!
 
 Adds Tooltips to food that gives Status Effects when eaten
 
