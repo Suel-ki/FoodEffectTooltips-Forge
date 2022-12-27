@@ -3,6 +3,8 @@ package net.suel_ki.foodeffecttooltips;
 import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SuspiciousStewItem;
 import net.minecraft.world.item.UseAnim;
 
 import com.mojang.datafixers.util.Pair;
@@ -44,7 +47,9 @@ public class TooltipHelper {
         FoodProperties foodProperties = stack.getItem().getFoodProperties();
         if(foodProperties != null) {
             boolean isDrink = stack.getUseAnimation() == UseAnim.DRINK;
-            buildFoodEffectTooltip(tooltip, foodProperties.getEffects(), isDrink);
+            if (stack.getItem() instanceof SuspiciousStewItem)
+                buildStewFoodEffectTooltip(tooltip, stack.getTag(), isDrink);
+            else buildFoodEffectTooltip(tooltip, foodProperties.getEffects(), isDrink);
         }
     }
 
@@ -106,6 +111,28 @@ public class TooltipHelper {
                 } else if (d < 0.0D) {
                     e *= -1.0D;
                     tooltip.add((Component.translatable("attribute.modifier.take." + entityAttributeModifier3.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(e), Component.translatable((entityAttributeEntityAttributeModifierPair.getFirst()).getDescriptionId()))).withStyle(ChatFormatting.RED));
+                }
+            }
+        }
+    }
+
+    public static void buildStewFoodEffectTooltip(List<Component> tooltip, CompoundTag compoundTag, boolean drink) {
+        List<Pair<MobEffectInstance, Float>> effects = Lists.newArrayList();
+        if (compoundTag != null && compoundTag.contains(SuspiciousStewItem.EFFECTS_TAG, ListTag.TAG_LIST)) {
+            ListTag listtag = compoundTag.getList(SuspiciousStewItem.EFFECTS_TAG, ListTag.TAG_COMPOUND);
+
+            for (int i = 0; i < listtag.size(); ++i) {
+                int duration = 160;
+                CompoundTag effectTag = listtag.getCompound(i);
+                if (effectTag.contains(SuspiciousStewItem.EFFECT_DURATION_TAG, ListTag.TAG_INT)) {
+                    duration = effectTag.getInt(SuspiciousStewItem.EFFECT_DURATION_TAG);
+                }
+
+                MobEffect mobeffect = MobEffect.byId(effectTag.getByte(SuspiciousStewItem.EFFECT_ID_TAG));
+                mobeffect = net.minecraftforge.common.ForgeHooks.loadMobEffect(effectTag, "forge:effect_id", mobeffect);
+                if (mobeffect != null) {
+                    effects.add(Pair.of(new MobEffectInstance(mobeffect, duration), 1.0F));
+                    buildFoodEffectTooltip(tooltip, effects, drink);
                 }
             }
         }
