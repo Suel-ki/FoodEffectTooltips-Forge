@@ -1,26 +1,27 @@
 package net.suel_ki.foodeffecttooltips;
 
 import com.google.common.collect.Lists;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.StringUtil;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SuspiciousStewItem;
-import net.minecraft.world.item.UseAnim;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+
+import net.minecraft.item.SuspiciousStewItem;
+import net.minecraft.item.Food;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.suel_ki.foodeffecttooltips.config.FoodEffectsConfig;
 
 import java.util.Iterator;
@@ -34,39 +35,38 @@ public class TooltipHelper {
         ResourceLocation id = Registry.ITEM.getKey(item);
 
         boolean isWhitelist = FoodEffectsConfig.UseAsWhitelistInstead.get();
-        if(FoodEffectsConfig.BlacklistedItemIdentifiers.get().contains(id.toString())) {
+        if (FoodEffectsConfig.BlacklistedItemIdentifiers.get().contains(id.toString())) {
             return isWhitelist;
         }
-        if(FoodEffectsConfig.BlacklistedModsIDs.get().contains(id.getNamespace())) {
+        if (FoodEffectsConfig.BlacklistedModsIDs.get().contains(id.getNamespace())) {
             return isWhitelist;
         }
         return !isWhitelist;
     }
 
-    public static void addFoodComponentEffectTooltip(ItemStack stack, List<Component> tooltip) {
-        FoodProperties foodProperties = stack.getItem().getFoodProperties();
-        if(foodProperties != null) {
-            boolean isDrink = stack.getUseAnimation() == UseAnim.DRINK;
+    public static void addFoodComponentEffectTooltip(ItemStack stack, List<ITextComponent> tooltip) {
+        Food foodProperties = stack.getItem().getFoodProperties();
+        if (foodProperties != null) {
+            boolean isDrink = stack.getUseAnimation() == UseAction.DRINK;
             if (stack.getItem() instanceof SuspiciousStewItem)
                 buildStewFoodEffectTooltip(tooltip, stack.getTag(), isDrink);
             else buildFoodEffectTooltip(tooltip, foodProperties.getEffects(), isDrink);
         }
     }
 
-    public static void buildFoodEffectTooltip(List<Component> tooltip, List<Pair<MobEffectInstance, Float>> effectsWithChance, boolean drink) {
-        if(effectsWithChance.isEmpty()) {
+    public static void buildFoodEffectTooltip(List<ITextComponent> tooltip, List<Pair<EffectInstance, Float>> effectsWithChance, boolean drink) {
+        if (effectsWithChance.isEmpty()) {
             return;
         }
-
         List<Pair<Attribute, AttributeModifier>> modifiersList = Lists.newArrayList();
-        MutableComponent translatableComponent;
-        MobEffect mobEffect;
-        for(Iterator<Pair<MobEffectInstance, Float>> var5 = effectsWithChance.iterator(); var5.hasNext(); tooltip.add(translatableComponent.withStyle(mobEffect.getCategory().getTooltipFormatting()))) {
-            Pair<MobEffectInstance, Float> entry = var5.next();
-            MobEffectInstance mobEffectInstance = entry.getFirst();
+        TranslationTextComponent translatableComponent;
+        Effect mobEffect;
+        for (Iterator<Pair<EffectInstance, Float>> var5 = effectsWithChance.iterator(); var5.hasNext(); tooltip.add(translatableComponent.withStyle(mobEffect.getCategory().getTooltipFormatting()))) {
+            Pair<EffectInstance, Float> entry = var5.next();
+            EffectInstance mobEffectInstance = entry.getFirst();
             Float chance = entry.getSecond();
 
-            translatableComponent = Component.translatable(mobEffectInstance.getDescriptionId());
+            translatableComponent = new TranslationTextComponent(mobEffectInstance.getDescriptionId());
             mobEffect = mobEffectInstance.getEffect();
             Map<Attribute, AttributeModifier> map = mobEffect.getAttributeModifiers();
             if (!map.isEmpty()) {
@@ -78,22 +78,22 @@ public class TooltipHelper {
             }
 
             if (mobEffectInstance.getAmplifier() > 0) {
-                translatableComponent = Component.translatable("potion.withAmplifier", translatableComponent, Component.translatable("potion.potency." + mobEffectInstance.getAmplifier()));
+                translatableComponent = new TranslationTextComponent("potion.withAmplifier", translatableComponent, new TranslationTextComponent("potion.potency." + mobEffectInstance.getAmplifier()));
             }
             if (mobEffectInstance.getDuration() > 20) {
-                translatableComponent = Component.translatable("potion.withDuration", translatableComponent, StringUtil.formatTickDuration(mobEffectInstance.getDuration()));
+                translatableComponent = new TranslationTextComponent("potion.withDuration", translatableComponent, StringUtils.formatTickDuration(mobEffectInstance.getDuration()));
             }
-            if(chance < 1.0F) {
-                translatableComponent = Component.translatable("foodeffecttooltips.food.withChance", translatableComponent, Math.round(chance * 100));
+            if (chance < 1.0F) {
+                translatableComponent = new TranslationTextComponent("foodeffecttooltips.food.withChance", translatableComponent, Math.round(chance * 100));
             }
         }
 
         if (!modifiersList.isEmpty()) {
-            tooltip.add(CommonComponents.EMPTY);
-            if(drink) {
-                tooltip.add(Component.translatable("potion.whenDrank").withStyle(ChatFormatting.DARK_PURPLE));
+            tooltip.add(StringTextComponent.EMPTY);
+            if (drink) {
+                tooltip.add(new TranslationTextComponent("potion.whenDrank").withStyle(TextFormatting.DARK_PURPLE));
             } else {
-                tooltip.add(Component.translatable("foodeffecttooltips.food.whenEaten").withStyle(ChatFormatting.DARK_PURPLE));
+                tooltip.add(new TranslationTextComponent("foodeffecttooltips.food.whenEaten").withStyle(TextFormatting.DARK_PURPLE));
             }
 
             for (Pair<Attribute, AttributeModifier> entityAttributeEntityAttributeModifierPair : modifiersList) {
@@ -107,31 +107,31 @@ public class TooltipHelper {
                 }
 
                 if (d > 0.0D) {
-                    tooltip.add((Component.translatable("attribute.modifier.plus." + entityAttributeModifier3.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(e), Component.translatable((entityAttributeEntityAttributeModifierPair.getFirst()).getDescriptionId()))).withStyle(ChatFormatting.BLUE));
+                    tooltip.add((new TranslationTextComponent("attribute.modifier.plus." + entityAttributeModifier3.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(e), new TranslationTextComponent((entityAttributeEntityAttributeModifierPair.getFirst()).getDescriptionId()))).withStyle(TextFormatting.BLUE));
                 } else if (d < 0.0D) {
                     e *= -1.0D;
-                    tooltip.add((Component.translatable("attribute.modifier.take." + entityAttributeModifier3.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(e), Component.translatable((entityAttributeEntityAttributeModifierPair.getFirst()).getDescriptionId()))).withStyle(ChatFormatting.RED));
+                    tooltip.add((new TranslationTextComponent("attribute.modifier.take." + entityAttributeModifier3.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(e), new TranslationTextComponent((entityAttributeEntityAttributeModifierPair.getFirst()).getDescriptionId()))).withStyle(TextFormatting.RED));
                 }
             }
         }
     }
 
-    public static void buildStewFoodEffectTooltip(List<Component> tooltip, CompoundTag compoundTag, boolean drink) {
-        List<Pair<MobEffectInstance, Float>> effects = Lists.newArrayList();
-        if (compoundTag != null && compoundTag.contains(SuspiciousStewItem.EFFECTS_TAG, ListTag.TAG_LIST)) {
-            ListTag listtag = compoundTag.getList(SuspiciousStewItem.EFFECTS_TAG, ListTag.TAG_COMPOUND);
 
-            for (int i = 0; i < listtag.size(); ++i) {
+    public static void buildStewFoodEffectTooltip(List<ITextComponent> tooltip, CompoundNBT compoundNBT, boolean drink) {
+        List<Pair<EffectInstance, Float>> effects = Lists.newArrayList();
+        if (compoundNBT != null && compoundNBT.contains("Effects", 9)) {
+            ListNBT listnbt = compoundNBT.getList("Effects", 10);
+
+            for (int i = 0; i < listnbt.size(); ++i) {
                 int duration = 160;
-                CompoundTag effectTag = listtag.getCompound(i);
-                if (effectTag.contains(SuspiciousStewItem.EFFECT_DURATION_TAG, ListTag.TAG_INT)) {
-                    duration = effectTag.getInt(SuspiciousStewItem.EFFECT_DURATION_TAG);
+                CompoundNBT effectNbt = listnbt.getCompound(i);
+                if (effectNbt.contains("EffectDuration", 3)) {
+                    duration = effectNbt.getInt("EffectDuration");
                 }
 
-                MobEffect mobeffect = MobEffect.byId(effectTag.getByte(SuspiciousStewItem.EFFECT_ID_TAG));
-                mobeffect = net.minecraftforge.common.ForgeHooks.loadMobEffect(effectTag, "forge:effect_id", mobeffect);
-                if (mobeffect != null) {
-                    effects.add(Pair.of(new MobEffectInstance(mobeffect, duration), 1.0F));
+                Effect effect = Effect.byId(effectNbt.getByte("EffectId"));
+                if (effect != null) {
+                    effects.add(Pair.of(new EffectInstance(effect, duration), 1.0F));
                     buildFoodEffectTooltip(tooltip, effects, drink);
                 }
             }
