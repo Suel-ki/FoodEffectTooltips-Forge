@@ -21,7 +21,7 @@ public class FoodEffectTooltips
     public FoodEffectTooltips()
     {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FoodEffectsConfig.CLIENT_SPEC);
-        if (ModList.get().isLoaded("cloth_config")) {
+        if (FMLLoader.getDist() == Dist.CLIENT && ModList.get().isLoaded("cloth_config")) {
             ConfigScreen.register();
         }
     }
