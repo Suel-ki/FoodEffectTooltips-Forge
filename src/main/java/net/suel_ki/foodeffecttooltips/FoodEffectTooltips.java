@@ -8,6 +8,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLLoader;
 
 import net.suel_ki.foodeffecttooltips.config.ConfigScreen;
 import net.suel_ki.foodeffecttooltips.config.FoodEffectsConfig;
