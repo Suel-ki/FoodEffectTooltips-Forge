@@ -2,7 +2,7 @@ package net.suel_ki.foodeffecttooltips;
 
 import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
@@ -23,6 +23,7 @@ import net.minecraft.world.item.UseAnim;
 import com.mojang.datafixers.util.Pair;
 import net.suel_ki.foodeffecttooltips.config.FoodEffectsConfig;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class TooltipHelper {
 
     public static boolean shouldShowTooltip(ItemStack stack) {
         Item item = stack.getItem();
-        ResourceLocation id = Registry.ITEM.getKey(item);
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
 
         boolean isWhitelist = FoodEffectsConfig.UseAsWhitelistInstead.get();
         if(FoodEffectsConfig.BlacklistedItemIdentifiers.get().contains(id.toString())) {
@@ -47,9 +48,7 @@ public class TooltipHelper {
         FoodProperties foodProperties = stack.getItem().getFoodProperties();
         if(foodProperties != null) {
             boolean isDrink = stack.getUseAnimation() == UseAnim.DRINK;
-            if (stack.getItem() instanceof SuspiciousStewItem)
-                buildStewFoodEffectTooltip(tooltip, stack.getTag(), isDrink);
-            else buildFoodEffectTooltip(tooltip, foodProperties.getEffects(), isDrink);
+            buildFoodEffectTooltip(tooltip, foodProperties.getEffects(), isDrink);
         }
     }
 
@@ -68,6 +67,7 @@ public class TooltipHelper {
 
             translatableComponent = Component.translatable(mobEffectInstance.getDescriptionId());
             mobEffect = mobEffectInstance.getEffect();
+
             Map<Attribute, AttributeModifier> map = mobEffect.getAttributeModifiers();
             if (!map.isEmpty()) {
                 for (Map.Entry<Attribute, AttributeModifier> entityAttributeEntityAttributeModifierEntry : map.entrySet()) {
@@ -116,14 +116,15 @@ public class TooltipHelper {
         }
     }
 
-    public static void buildStewFoodEffectTooltip(List<Component> tooltip, CompoundTag compoundTag, boolean drink) {
-        List<Pair<MobEffectInstance, Float>> effects = Lists.newArrayList();
+    public static List<MobEffectInstance> getStewEffects(ItemStack stew) {
+        List<MobEffectInstance> effects = new ArrayList<>();
+        CompoundTag compoundTag = stew.getTag();
         if (compoundTag != null && compoundTag.contains(SuspiciousStewItem.EFFECTS_TAG, ListTag.TAG_LIST)) {
             ListTag listtag = compoundTag.getList(SuspiciousStewItem.EFFECTS_TAG, ListTag.TAG_COMPOUND);
 
             for (int i = 0; i < listtag.size(); ++i) {
-                int duration = 160;
                 CompoundTag effectTag = listtag.getCompound(i);
+                int duration = 160;
                 if (effectTag.contains(SuspiciousStewItem.EFFECT_DURATION_TAG, ListTag.TAG_INT)) {
                     duration = effectTag.getInt(SuspiciousStewItem.EFFECT_DURATION_TAG);
                 }
@@ -131,10 +132,11 @@ public class TooltipHelper {
                 MobEffect mobeffect = MobEffect.byId(effectTag.getByte(SuspiciousStewItem.EFFECT_ID_TAG));
                 mobeffect = net.minecraftforge.common.ForgeHooks.loadMobEffect(effectTag, "forge:effect_id", mobeffect);
                 if (mobeffect != null) {
-                    effects.add(Pair.of(new MobEffectInstance(mobeffect, duration), 1.0F));
-                    buildFoodEffectTooltip(tooltip, effects, drink);
+                    effects.add(new MobEffectInstance(mobeffect, duration));
                 }
             }
         }
+        return effects;
     }
+
 }

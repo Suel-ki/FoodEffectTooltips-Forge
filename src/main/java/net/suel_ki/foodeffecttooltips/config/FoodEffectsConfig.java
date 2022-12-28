@@ -8,6 +8,8 @@ public class FoodEffectsConfig {
 
     public static final ForgeConfigSpec CLIENT_SPEC;
 
+    public static final ForgeConfigSpec.BooleanValue ShowSuspiciousStewTooltips;
+
     public static final ForgeConfigSpec.BooleanValue UseAsWhitelistInstead;
 
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> BlacklistedItemIdentifiers;
@@ -17,6 +19,10 @@ public class FoodEffectsConfig {
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         builder.push("food effects tooltip");
+
+        ShowSuspiciousStewTooltips = builder.
+                comment("Show suspicious stew food effects tooltips").
+                define("showSuspiciousStewTooltips", false);
 
         UseAsWhitelistInstead = builder.
                 comment("Use Lists as Whitelists instead.").

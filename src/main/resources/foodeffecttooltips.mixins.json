@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.suel_ki.foodeffecttooltips.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ItemStackMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

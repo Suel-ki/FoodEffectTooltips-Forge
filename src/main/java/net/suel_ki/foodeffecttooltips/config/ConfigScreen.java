@@ -16,7 +16,7 @@ public class ConfigScreen {
     public static void register() {
         ModLoadingContext.get().
                 registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
-                () -> new net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory((client, parent) -> ConfigScreen.getConfigScreen(parent)));
+                () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, parent) -> ConfigScreen.getConfigScreen(parent)));
     }
 
     public static Screen getConfigScreen(Screen parent) {
@@ -30,9 +30,19 @@ public class ConfigScreen {
 
         ConfigCategory general = builder.getOrCreateCategory(Component.translatable("cloth_config.FoodEffectTooltips.category.general"));
 
+        ForgeConfigSpec.BooleanValue showSuspiciousStewTooltips = FoodEffectsConfig.ShowSuspiciousStewTooltips;
         ForgeConfigSpec.BooleanValue useAsWhitelistInstead = FoodEffectsConfig.UseAsWhitelistInstead;
         ForgeConfigSpec.ConfigValue<List<? extends String>> BlacklistedItemIdentifiers = FoodEffectsConfig.BlacklistedItemIdentifiers;
         ForgeConfigSpec.ConfigValue<List<? extends String>> BlacklistedModsIDs = FoodEffectsConfig.BlacklistedModsIDs;
+
+        general.addEntry(eb
+                .startBooleanToggle(
+                        Component.translatable("cloth_config.FoodEffectTooltips.ShowSuspiciousStewTooltips"),
+                        showSuspiciousStewTooltips.get())
+                .setTooltip(Component.translatable("text.cloth_config.FoodEffectTooltips.option.ShowSuspiciousStewTooltips"))
+                .setDefaultValue(showSuspiciousStewTooltips.getDefault())
+                .setSaveConsumer(showSuspiciousStewTooltips::set)
+                .build());
 
         general.addEntry(eb
                 .startBooleanToggle(
