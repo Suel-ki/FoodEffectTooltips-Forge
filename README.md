@@ -1,28 +1,24 @@
+# Food Effect Tooltips (Forge)
 
-Installation information
-=======
+<img align="right" width="160" src="src/main/resources/icon.png">
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions at [github](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+[![](http://cf.way2muchnoise.eu/full_776426_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/food-effect-tooltips-forge)
+[![Minecraft Versions](https://cf.way2muchnoise.eu/versions/776426.svg)](https://www.curseforge.com/minecraft/mc-mods/food-effect-tooltips-forge)
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+This is the Unofficial Forge version of [Food Effect Tooltips](https://github.com/DaFuqs/FoodEffectTooltips), licensed under LGPLv3, please support the original work!
 
-> **Note**: For IDEs other than Intellij IDEA, you must run the `ideBeforeRun` task first from the terminal (such as `./gradlew ideBeforeRun`) for the run configs to work.
+Adds Tooltips to food that gives Status Effects when eaten
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+Quite a few food items grant the player bonuses in the form of status effects. These effects, however, are never listed ingame. Which is a nuisance, especially in modded scenarios, where the player is not acquainted with all food options and their effects.
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license, if you do not agree with it you can change your mapping names to other crowdsourced names in your 
-build.gradle. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+With Food Effect Tooltips all effects are shown in the items tooltip!
+- includes effects that only get applied with a % chance
+- shows stat changes for effects
+- works fully client side
+- compatible with other mods that display food information, like [AppleSkin](https://github.com/squeek502/AppleSkin)
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+![ ](https://cdn.modrinth.com/data/GGfyJWnG/images/f22e5fa3013611fb5588662696aa929c1a96b93b.png)
+
+![ ](https://cdn.modrinth.com/data/GGfyJWnG/images/531ff1e28c210beab319cdb192685e1552c878f2.png)
+
+![ ](https://cdn.modrinth.com/data/GGfyJWnG/images/d61df6d59442ba3dece1711e6e423d62a826e3bc.png)
