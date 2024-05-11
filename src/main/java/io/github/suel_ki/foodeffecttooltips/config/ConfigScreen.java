@@ -6,7 +6,7 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.neoforge.client.ConfigScreenHandler;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
@@ -15,8 +15,8 @@ public class ConfigScreen {
 
     public static void register() {
         ModLoadingContext.get().
-                registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
-                () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, parent) -> ConfigScreen.getConfigScreen(parent)));
+                registerExtensionPoint(IConfigScreenFactory.class,
+                () -> (minecraft, parent) -> ConfigScreen.getConfigScreen(parent));
     }
 
     public static Screen getConfigScreen(Screen parent) {
