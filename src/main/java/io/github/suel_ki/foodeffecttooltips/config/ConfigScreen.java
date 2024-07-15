@@ -68,7 +68,7 @@ public class ConfigScreen {
                         (List<String>) BlacklistedModsIDs.get())
                 .setTooltip(Component.translatable("text.cloth_config.FoodEffectTooltips.option.BlacklistedModsIDs"))
                 .setDefaultValue((List<String>) BlacklistedModsIDs.getDefault())
-                .setSaveConsumer(BlacklistedItemIdentifiers::set)
+                .setSaveConsumer(BlacklistedModsIDs::set)
                 .build());
 
         return builder.build();

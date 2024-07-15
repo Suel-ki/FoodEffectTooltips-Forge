@@ -75,7 +75,7 @@ public class TooltipHelper {
             if (mobEffectInstance.getAmplifier() > 0) {
                 translatableComponent = Component.translatable("potion.withAmplifier", translatableComponent, Component.translatable("potion.potency." + mobEffectInstance.getAmplifier()));
             }
-            if (mobEffectInstance.getDuration() > 20) {
+            if (!mobEffectInstance.endsWithin(20)) {
                 translatableComponent = Component.translatable("potion.withDuration", translatableComponent, StringUtil.formatTickDuration(mobEffectInstance.getDuration(), tickRate));
             }
             if(chance < 1.0F) {
