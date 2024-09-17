@@ -5,9 +5,11 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -16,7 +18,12 @@ public class ConfigScreen {
     public static void register() {
         ModLoadingContext.get().
                 registerExtensionPoint(IConfigScreenFactory.class,
-                () -> (minecraft, parent) -> ConfigScreen.getConfigScreen(parent));
+                        () -> new IConfigScreenFactory() {
+                            @Override
+                            public @NotNull Screen createScreen(@NotNull ModContainer modContainer, @NotNull Screen parent) {
+                                return getConfigScreen(parent);
+                            }
+                        });
     }
 
     public static Screen getConfigScreen(Screen parent) {
