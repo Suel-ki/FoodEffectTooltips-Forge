@@ -43,7 +43,7 @@ public class ItemStackMixin {
                     shift = At.Shift.AFTER),
             locals= LocalCapture.CAPTURE_FAILHARD
     )
-    private void getTooltipLines(Item.TooltipContext tooltipContext, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, List<Component> tooltips, Consumer<Component> consumer) {
+    private void getTooltipLines(Item.TooltipContext tooltipContext, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, boolean flag, List<Component> tooltips, Consumer<Component> consumer) {
         ItemStack stack = (ItemStack) (Object) this;
         if (!stack.isEmpty() && TooltipHelper.shouldShowTooltip(stack)) {
             @Nullable Consumable foodComponent = stack.get(DataComponents.CONSUMABLE);
