@@ -35,7 +35,10 @@ public class FoodEffectsConfig {
 
         BlacklistedModsIDs = builder.
                 comment("Blacklisted Mod IDs.").
-                defineList("blacklistModsIDs", List.of("modid"), modName -> modName instanceof String);
+                defineList("blacklistModsIDs",
+                        List.of(
+                                "modid", "farmersdelight", "expandeddelight", "moredelight", "oceansdelight", "ubesdelight", "vinery"
+                        ), modName -> modName instanceof String);
 
         builder.pop();
 

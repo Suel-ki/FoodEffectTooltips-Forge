@@ -41,7 +41,7 @@ runs {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
     }
 
-    data {
+    clientData {
         programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
@@ -68,12 +68,11 @@ tasks.withType(ProcessResources).configureEach {
             neo_version         : neo_version,
             neo_version_range: neo_version_range,
             loader_version_range: loader_version_range,
-            mod_version: mod_version,
-            pack_format_number: pack_format_number
+            mod_version: mod_version
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
 }
