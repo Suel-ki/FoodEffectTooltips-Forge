@@ -14,6 +14,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.SuspiciousStewEffects;
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +25,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
@@ -39,11 +39,11 @@ public class ItemStackMixin {
             method = "getTooltipLines",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V",
+                    target = "Lnet/minecraft/world/item/ItemStack;addDetailsToTooltip(Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/TooltipFlag;Ljava/util/function/Consumer;)V",
                     shift = At.Shift.AFTER),
             locals= LocalCapture.CAPTURE_FAILHARD
     )
-    private void getTooltipLines(Item.TooltipContext tooltipContext, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, boolean flag, List<Component> tooltips, Consumer<Component> consumer) {
+    private void getTooltipLines(Item.TooltipContext tooltipContext, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, TooltipDisplay tooltipdisplay, List<Component> tooltips) {
         ItemStack stack = (ItemStack) (Object) this;
         if (!stack.isEmpty() && TooltipHelper.shouldShowTooltip(stack)) {
             @Nullable Consumable foodComponent = stack.get(DataComponents.CONSUMABLE);
