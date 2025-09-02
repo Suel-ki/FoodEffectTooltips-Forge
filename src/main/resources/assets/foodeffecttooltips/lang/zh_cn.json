@@ -2,5 +2,16 @@
   "foodeffecttooltips.food.withChance": "%s [%d%%]",
   "foodeffecttooltips.food.whenEaten": "食用后：",
 
-  "config.foodeffecttooltips.title": "食物效果显示"
+  "config.foodeffecttooltips.title": "食物效果显示",
+
+  "cloth_config.FoodEffectTooltips.category.general": "通用",
+  "cloth_config.FoodEffectTooltips.ShowSuspiciousStewTooltips": "显示谜之炖菜效果显示",
+  "cloth_config.FoodEffectTooltips.UseAsWhitelistInstead": "用作白名单替代",
+  "cloth_config.FoodEffectTooltips.BlacklistedItemIdentifiers": "黑名单物品ID",
+  "cloth_config.FoodEffectTooltips.BlacklistedModsIDs": "黑名单模组ID",
+
+  "text.cloth_config.FoodEffectTooltips.option.ShowSuspiciousStewTooltips": "显示谜之炖菜的食物效果显示",
+  "text.cloth_config.FoodEffectTooltips.option.UseAsWhitelistInstead": "将黑名单用作白名单使用",
+  "text.cloth_config.FoodEffectTooltips.option.BlacklistedItemIdentifiers": "黑名单物品ID",
+  "text.cloth_config.FoodEffectTooltips.option.BlacklistedModsIDs": "黑名单模组ID"
 }
