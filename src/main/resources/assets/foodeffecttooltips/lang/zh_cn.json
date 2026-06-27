@@ -2,5 +2,21 @@
   "foodeffecttooltips.food.withChance": "%s [%d%%]",
   "foodeffecttooltips.food.whenEaten": "食用后：",
 
-  "config.foodeffecttooltips.title": "食物效果显示"
+  "config.foodeffecttooltips.title": "食物效果显示",
+
+  "cloth_config.FoodEffectTooltips.category.general": "常规",
+
+  "cloth_config.FoodEffectTooltips.ShowSuspiciousStewTooltips": "显示谜之炖菜效果",
+  "cloth_config.FoodEffectTooltips.WhitelistedItemIdentifiers": "物品 ID 白名单",
+  "cloth_config.FoodEffectTooltips.WhitelistedModsIDs": "模组 ID 白名单",
+  "cloth_config.FoodEffectTooltips.BlacklistedItemIdentifiers": "物品 ID 黑名单",
+  "cloth_config.FoodEffectTooltips.BlacklistedModsIDs": "模组 ID 黑名单",
+  "cloth_config.FoodEffectTooltips.DefaultTooltipBehavior": "默认显示行为",
+
+  "text.cloth_config.FoodEffectTooltips.option.ShowSuspiciousStewTooltips": "显示谜之炖菜附加的食物效果提示",
+  "text.cloth_config.FoodEffectTooltips.option.WhitelistedItemIdentifiers": "始终显示效果提示的物品 ID 列表",
+  "text.cloth_config.FoodEffectTooltips.option.WhitelistedModsIDs": "始终显示其物品效果提示的模组 ID 列表",
+  "text.cloth_config.FoodEffectTooltips.option.BlacklistedItemIdentifiers": "不显示效果提示的物品 ID 黑名单",
+  "text.cloth_config.FoodEffectTooltips.option.BlacklistedModsIDs": "不显示效果提示的模组 ID 黑名单",
+  "text.cloth_config.FoodEffectTooltips.option.DefaultTooltipBehavior": "未列入名单物品的默认显示行为"
 }

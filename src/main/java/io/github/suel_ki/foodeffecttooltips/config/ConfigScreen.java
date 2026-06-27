@@ -32,9 +32,11 @@ public class ConfigScreen {
         ConfigCategory general = builder.getOrCreateCategory(Component.translatable("cloth_config.FoodEffectTooltips.category.general"));
 
         ForgeConfigSpec.BooleanValue showSuspiciousStewTooltips = FoodEffectsConfig.ShowSuspiciousStewTooltips;
-        ForgeConfigSpec.BooleanValue useAsWhitelistInstead = FoodEffectsConfig.UseAsWhitelistInstead;
+        ForgeConfigSpec.ConfigValue<List<? extends String>> WhitelistedItemIdentifiers = FoodEffectsConfig.WhitelistedItemIdentifiers;
+        ForgeConfigSpec.ConfigValue<List<? extends String>> WhitelistedModsIDs = FoodEffectsConfig.WhitelistedModsIDs;
         ForgeConfigSpec.ConfigValue<List<? extends String>> BlacklistedItemIdentifiers = FoodEffectsConfig.BlacklistedItemIdentifiers;
         ForgeConfigSpec.ConfigValue<List<? extends String>> BlacklistedModsIDs = FoodEffectsConfig.BlacklistedModsIDs;
+        ForgeConfigSpec.EnumValue<FoodEffectsConfig.TooltipBehavior> tooltipBehavior = FoodEffectsConfig.DefaultTooltipBehavior;
 
         general.addEntry(eb
                 .startBooleanToggle(
@@ -46,12 +48,21 @@ public class ConfigScreen {
                 .build());
 
         general.addEntry(eb
-                .startBooleanToggle(
-                        Component.translatable("cloth_config.FoodEffectTooltips.UseAsWhitelistInstead"),
-                        useAsWhitelistInstead.get())
-                .setTooltip(Component.translatable("text.cloth_config.FoodEffectTooltips.option.UseAsWhitelistInstead"))
-                .setDefaultValue(useAsWhitelistInstead.getDefault())
-                .setSaveConsumer(useAsWhitelistInstead::set)
+                .startStrList(
+                        Component.translatable("cloth_config.FoodEffectTooltips.WhitelistedItemIdentifiers"),
+                        convertToListOfString(WhitelistedItemIdentifiers.get()))
+                .setTooltip(Component.translatable("text.cloth_config.FoodEffectTooltips.option.WhitelistedItemIdentifiers"))
+                .setDefaultValue(convertToListOfString(WhitelistedItemIdentifiers.getDefault()))
+                .setSaveConsumer(WhitelistedItemIdentifiers::set)
+                .build());
+
+        general.addEntry(eb
+                .startStrList(
+                        Component.translatable("cloth_config.FoodEffectTooltips.WhitelistedModsIDs"),
+                        convertToListOfString(WhitelistedModsIDs.get()))
+                .setTooltip(Component.translatable("text.cloth_config.FoodEffectTooltips.option.WhitelistedModsIDs"))
+                .setDefaultValue(convertToListOfString(WhitelistedModsIDs.getDefault()))
+                .setSaveConsumer(WhitelistedModsIDs::set)
                 .build());
 
         general.addEntry(eb
@@ -70,6 +81,16 @@ public class ConfigScreen {
                 .setTooltip(Component.translatable("text.cloth_config.FoodEffectTooltips.option.BlacklistedModsIDs"))
                 .setDefaultValue(convertToListOfString(BlacklistedModsIDs.getDefault()))
                 .setSaveConsumer(BlacklistedModsIDs::set)
+                .build());
+
+        general.addEntry(eb
+                .startEnumSelector(
+                        Component.translatable("cloth_config.FoodEffectTooltips.DefaultTooltipBehavior"),
+                        FoodEffectsConfig.TooltipBehavior.class,
+                        tooltipBehavior.get())
+                .setTooltip(Component.translatable("text.cloth_config.FoodEffectTooltips.option.DefaultTooltipBehavior"))
+                .setDefaultValue(tooltipBehavior.getDefault())
+                .setSaveConsumer(tooltipBehavior::set)
                 .build());
 
         return builder.build();

@@ -33,17 +33,25 @@ public class TooltipHelper {
 
     public static boolean shouldShowTooltip(ItemStack stack) {
         Item item = stack.getItem();
-
         ResourceLocation id = ForgeRegistries.ITEMS.getKey(item);
+        String itemId = id.toString();
+        String modId = id.getNamespace();
 
-        boolean isWhitelist = FoodEffectsConfig.UseAsWhitelistInstead.get();
-        if(FoodEffectsConfig.BlacklistedItemIdentifiers.get().contains(id.toString())) {
-            return isWhitelist;
+        if (FoodEffectsConfig.WhitelistedItemIdentifiers.get().contains(itemId)) {
+            return true;
         }
-        if(FoodEffectsConfig.BlacklistedModsIDs.get().contains(id.getNamespace())) {
-            return isWhitelist;
+        if (FoodEffectsConfig.WhitelistedModsIDs.get().contains(modId)) {
+            return true;
         }
-        return !isWhitelist;
+
+        if (FoodEffectsConfig.BlacklistedItemIdentifiers.get().contains(itemId)) {
+            return false;
+        }
+        if (FoodEffectsConfig.BlacklistedModsIDs.get().contains(modId)) {
+            return false;
+        }
+
+        return FoodEffectsConfig.DefaultTooltipBehavior.get() == FoodEffectsConfig.TooltipBehavior.SHOW;
     }
 
     public static void addFoodComponentEffectTooltip(ItemStack stack, List<Component> tooltip) {

@@ -10,11 +10,20 @@ public class FoodEffectsConfig {
 
     public static final ForgeConfigSpec.BooleanValue ShowSuspiciousStewTooltips;
 
-    public static final ForgeConfigSpec.BooleanValue UseAsWhitelistInstead;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> WhitelistedItemIdentifiers;
+
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>>  WhitelistedModsIDs;
 
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> BlacklistedItemIdentifiers;
 
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>>  BlacklistedModsIDs;
+
+    public static final ForgeConfigSpec.EnumValue<TooltipBehavior> DefaultTooltipBehavior;
+
+    public enum TooltipBehavior {
+        SHOW,
+        HIDE
+    }
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -24,9 +33,13 @@ public class FoodEffectsConfig {
                 comment("Show suspicious stew food effects tooltips").
                 define("showSuspiciousStewTooltips", false);
 
-        UseAsWhitelistInstead = builder.
-                comment("Use Lists as Whitelists instead.").
-                define("whitelistInstead", false);
+        WhitelistedItemIdentifiers = builder.
+                comment("Whitelisted Item.").
+                defineList("whitelistItems", List.of("modid:testitem"), itemName -> itemName instanceof String);
+
+        WhitelistedModsIDs = builder.
+                comment("Whitelisted Item.").
+                defineList("whitelistModsIDs", List.of("modid"), modName -> modName instanceof String);
 
         BlacklistedItemIdentifiers = builder.
                 comment("Blacklisted Item.").
@@ -35,6 +48,10 @@ public class FoodEffectsConfig {
         BlacklistedModsIDs = builder.
                 comment("Blacklisted Mod IDs.").
                 defineList("blacklistModsIDs", List.of("modid"), modName -> modName instanceof String);
+
+        DefaultTooltipBehavior = builder.
+                comment("Default tooltip behavior for unlisted items").
+                defineEnum("defaultTooltipBehavior", TooltipBehavior.SHOW);
 
         builder.pop();
 
